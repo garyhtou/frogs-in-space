@@ -12,8 +12,10 @@ app.use('/css',express.static(__dirname + '/css'));
 app.use('/js',express.static(__dirname + '/js'));
 app.use('/assets',express.static(__dirname + '/assets'));
 
+server.lastPlayderID = 0; // Keep track of the last id assigned to a new player
+
 app.get('/',function(req,res){
-  res.sendFile(__dirname+'/index.html');
+  res.sendFile('/index.html',  {root : __dirname });
 });
 
 // listen for requests :)
@@ -21,9 +23,8 @@ const listener = app.listen(process.env.PORT, () => {
   console.log("Your app is listening on port " + listener.address().port);
 });
 
-server.lastPlayderID = 0; // Keep track of the last id assigned to a new player
-
 io.on('connection',function(socket){
+    console.log("pog")
     socket.on('newplayer',function(){
         socket.player = {
             id: server.lastPlayderID++,
@@ -34,6 +35,7 @@ io.on('connection',function(socket){
         socket.broadcast.emit('newplayer',socket.player);
     });
 });
+
 
 function getAllPlayers(){
     var players = [];
