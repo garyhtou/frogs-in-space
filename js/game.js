@@ -129,36 +129,23 @@ var tempLoc = {x:0, y:0}
 var lastDirection = 0;
 
 function update() {
-  //player.setVelocity(0);
-
   if (game.cursors.left.isDown)
   {
       Client.sendKey(-1,0, 3);
-    //tempLoc.x -= 1;
   }
   else if (game.cursors.right.isDown)
   {
       Client.sendKey(1,0, 1);
-    //tempLoc.x += 1;
   }
 
   if (game.cursors.up.isDown)
   {  
       Client.sendKey(0,-1, 2);
-    //tempLoc.y -= 1;
   }
   else if (game.cursors.down.isDown)
   {
       Client.sendKey(0,1, 0);
-    //tempLoc.y += 1;
   }
-  /*
-  else if (code == Phaser.Input.Keyboard.KeyCodes.ENTER)
-  {
-      console.log(document.getElementById("Chat"))
-  }
-  */
-  //listen for enter key here
 }
 
 game.addNewPlayer = function(id,x,y){
@@ -167,9 +154,6 @@ game.addNewPlayer = function(id,x,y){
   
   //this.physics.add.collider(this.playerMap[id], worldLayer);
   //this.playerMap[id] = this.scene.scenes[0].add.circle(x, y, 10)
-  
-  //reason why you can't place text after new people log in?
-  //can't do without DB...
 };
 
 game.removePlayer = function(id){
@@ -182,7 +166,6 @@ game.removePlayer = function(id){
   }
 };
 
- 
 function hello(e){
   var stuff = document.getElementById("Chat").value
   if(stuff != ""){
@@ -200,10 +183,8 @@ game.updateBubble = function(id, text){
   
   const pl = this.playerMap[id];
   this.textMap[id] = this.scene.scenes[0].add.text(pl.x,pl.y - 45,text);
-  
-  
 }
-//fix
+
 game.movePlayer = function(id,x,y,d){
     var currentFrame = ""
     switch(d){
@@ -220,7 +201,6 @@ game.movePlayer = function(id,x,y,d){
         currentFrame = 'frog_w'
         break;
     }
-    
   
     this.playerMap[id].x = x
     this.playerMap[id].y = y
@@ -237,34 +217,7 @@ game.movePlayer = function(id,x,y,d){
       this.playerMap[id].anims.play(currentFrame);
     }
     
-    
   
-    /*
-    var player = this.playerMap[id];
-    
-    var distance = Phaser.Math.Distance.BetweenPoints(player.x,player.y,x,y);
-    var duration = distance*10;
-  
-    console.log(this.playerMap[id].y)
-    
-    var tween = this.scene.scenes[0].tweens.add({
-      targets: player,
-      duration: duration,
-      x:x,
-      y:y
-    })
-    
-    tween.play();
-    */
-    
-  
-  
-  
-    /*
-    var tween = game.add.tween(player);
-    tween.to({x:x,y:y}, duration);
-    tween.start();
-    */
 };
 
 
