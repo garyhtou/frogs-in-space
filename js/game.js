@@ -43,7 +43,7 @@ function preload() {
       */
     
     this.load.image("main_room_tiles", "https://cdn.glitch.com/a8799410-ced8-4389-b408-e70cb1fd6d7b%2Fmain_room.png?v=1602985634599"); 
-    this.load.tilemapTiledJSON("map", "https://cdn.glitch.com/a8799410-ced8-4389-b408-e70cb1fd6d7b%2Fmain_room.json?v=1602991085683");
+    this.load.tilemapTiledJSON("map", "https://cdn.glitch.com/a8799410-ced8-4389-b408-e70cb1fd6d7b%2Fmap.json?v=1602996648162");
   
     this.load.multiatlas('greenFrog', 
                          'https://cdn.glitch.com/a8799410-ced8-4389-b408-e70cb1fd6d7b%2FplayerPurple_spritesheet.json?v=1602977954157', 
@@ -96,7 +96,8 @@ s
   
   // LOOK HERE FOR THE MAIN_ROOM CODE
   //I'm disabling these just to test other parts of the code -quinn
-  this.map = this.make.tilemap({ key: "main_room_map" }); //should be add.tilemap?
+  //this.map = this.make.tilemap({ key: "main_room_map" }); //should be add.tilemap?
+  this.map = this.add.tilemap("map");
 
   // Parameters are the name you gave the tileset in Tiled and then the key of the tileset image in
   // Phaser's cache (i.e. the name you used in preload)
