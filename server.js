@@ -37,6 +37,7 @@ io.on("connection", function(socket) {
     socket.on("key", function(data) {
       socket.player.x += data.x;
       socket.player.y += data.y;
+      socket.player.d = data.d;
       io.emit("move", socket.player);
     });
 

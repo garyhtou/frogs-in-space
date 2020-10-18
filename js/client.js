@@ -22,12 +22,12 @@ Client.socket.on('remove',function(id){
     game.removePlayer(id);
 });
 
-Client.sendKey = function(x,y){
-  Client.socket.emit('key',{x:x,y:y});
+Client.sendKey = function(x,y, d){
+  Client.socket.emit('key',{x:x,y:y, d:d});
 };
 
 Client.socket.on('move',function(data){
-    game.movePlayer(data.id,data.x,data.y);
+    game.movePlayer(data.id,data.x,data.y,data.d);
 });
 
 Client.sendChat = function(text){

@@ -1,11 +1,13 @@
 var config = {
 	type: Phaser.AUTO,
-	width: 1280, // initial width that determines the scaled size
-  height: 690,
+	width: 1088, // initial width that determines the scaled size
+  height: 768,
+  /*
 	scale: {
 		mode: Phaser.Scale.FIT,
 		autoCenter: Phaser.Scale.CENTER_BOTH,
 	},
+  */
 	physics: {
 		default: "arcade",
 		arcade: {
@@ -39,12 +41,17 @@ function preload() {
             frameHeight: 48
         })
       */
-
-    this.load.image("testCircle", "https://cdn.glitch.com/a8799410-ced8-4389-b408-e70cb1fd6d7b%2F1920px-Noto_Emoji_KitKat_263a.svg-2.png?v=1602974495091");
-    this.load.image('sky', 'https://cdn.glitch.com/a8799410-ced8-4389-b408-e70cb1fd6d7b%2Fthumbnails%2Fsky.jpg?1602970097523')
+    
+    this.load.image("main_room_tiles", "https://cdn.glitch.com/a8799410-ced8-4389-b408-e70cb1fd6d7b%2Fmain_room.png?v=1602985634599"); 
+    this.load.tilemapTiledJSON("main_room_map", "https://cdn.glitch.com/a8799410-ced8-4389-b408-e70cb1fd6d7b%2Fmain_room.json?v=1602991085683");
+  
+    this.load.multiatlas('greenFrog', 
+                         'https://cdn.glitch.com/a8799410-ced8-4389-b408-e70cb1fd6d7b%2FplayerPurple_spritesheet.json?v=1602977954157', 
+                         'https://cdn.glitch.com/a8799410-ced8-4389-b408-e70cb1fd6d7b%2Fplayer_spritesheet.png?v=1602977449522');
 }
 
 function create() {
+   this.add.image(400, 300, 'main_room_tiles');
 
   game.playerMap = {};
   game.textMap = {};
@@ -53,10 +60,12 @@ function create() {
   
   var bubble = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ENTER);  
   bubble.on('down', hello)
+
   
-  
-  
-  console.log(game.cursors)
+  this.anims.create({ key: 'frog_n', frames: [{key:'greenFrog', frame:"frog2b.png"}, {key:'greenFrog', frame:"frog2.png"}], frameRate: 10, repeat: 2});
+  this.anims.create({ key: 'frog_e', frames: [{key:'greenFrog', frame:"frog1b.png"}, {key:'greenFrog', frame:"frog1.png"}], frameRate: 10, repeat: 2});
+  this.anims.create({ key: 'frog_s', frames: [{key:'greenFrog', frame:"frog4b.png"}, {key:'greenFrog', frame:"frog4.png"}], frameRate: 10, repeat: 2});
+  this.anims.create({ key: 'frog_w', frames: [{key:'greenFrog', frame:"frog3b.png"}, {key:'greenFrog', frame:"frog3.png"}], frameRate: 10, repeat: 2});
   //Phaser.Input.Keyboard.KeyboardPlugin.removeListener(Phaser.Input.Keyboard.KeyCodes.SPACE)
 	//place assets in scene here
 	/*
@@ -80,38 +89,61 @@ s
         */
 
 	//this.add.image(500, 500, "testCircle");
-  this.add.text(400, 300, "Welcome to the moon", { color: "white" });
     
     // const bg = this.add.image(400, 300, 'sky2');
     // bg.width = window.
     // platforms = this.physics.add.staticGroup();
+  
+  // LOOK HERE FOR THE MAIN_ROOM CODE
+  //I'm disabling these just to test other parts of the code -quinn
+  this.map = this.make.tilemap({ key: "main_room_map" });
 
+  // Parameters are the name you gave the tileset in Tiled and then the key of the tileset image in
+  // Phaser's cache (i.e. the name you used in preload)
+  this.tiles = this.map.addTilesetImage("main_room", "main_room_tiles");
+  
+  this.backgroundLayer = this.map.createStaticLayer("Tile Layer 1", this.tiles, 0, 0);
+  
+  console.log(this)
+
+  // Parameters: layer name (or index) from Tiled, tileset, x, y
+  //const worldLayer = map.createStaticLayer("Tile Layer 1", tileset, 0, 0);
+  
+  //worldLayer.setCollisionByProperty({ collides: true });
+  
+  //set physics here
+  
+  //this.cameras.main.setBounds(0, 0, map.widthInPixels, map.heightInPixels);
+  
 	Client.askNewPlayer();
 }
 
 var tempLoc = {x:0, y:0}
+//n,e,s,w = 0,1,2,3
+var lastDirection = 0;
+
 function update() {
   //player.setVelocity(0);
 
   if (game.cursors.left.isDown)
   {
-      Client.sendKey(-1,0);
+      Client.sendKey(-1,0, 3);
     //tempLoc.x -= 1;
   }
   else if (game.cursors.right.isDown)
   {
-      Client.sendKey(1,0);
+      Client.sendKey(1,0, 1);
     //tempLoc.x += 1;
   }
 
   if (game.cursors.up.isDown)
   {  
-      Client.sendKey(0,-1);
+      Client.sendKey(0,-1, 2);
     //tempLoc.y -= 1;
   }
   else if (game.cursors.down.isDown)
   {
-      Client.sendKey(0,1);
+      Client.sendKey(0,1, 0);
     //tempLoc.y += 1;
   }
   /*
@@ -124,13 +156,24 @@ function update() {
 }
 
 game.addNewPlayer = function(id,x,y){
-   this.playerMap[id] = this.scene.scenes[0].add.image(x,y,"testCircle");
+   this.playerMap[id] = this.scene.scenes[0].add.sprite(x, y, 'greenFrog', 'frog1.png');
+   this.playerMap[id].setScale(0.25, 0.25);
+  
+  //this.physics.add.collider(this.playerMap[id], worldLayer);
   //this.playerMap[id] = this.scene.scenes[0].add.circle(x, y, 10)
+  
+  //reason why you can't place text after new people log in?
+  //can't do without DB...
 };
 
 game.removePlayer = function(id){
     this.playerMap[id].destroy();
     delete this.playerMap[id];
+  
+  if(this.textMap[id] !== undefined){
+    this.textMap[id].destroy();
+    delete this.textMap[id];
+  }
 };
 
  
@@ -150,19 +193,44 @@ game.updateBubble = function(id, text){
   }
   
   const pl = this.playerMap[id];
-  this.textMap[id] = this.scene.scenes[0].add.text(pl.x,pl.y - 15,text);
+  this.textMap[id] = this.scene.scenes[0].add.text(pl.x,pl.y - 45,text);
   
   
 }
 //fix
-game.movePlayer = function(id,x,y){
+game.movePlayer = function(id,x,y,d){
+    var currentFrame = ""
+    switch(d){
+      case 0:
+        currentFrame = 'frog_n'
+        break;
+      case 1:
+        currentFrame = 'frog_e'
+        break;
+      case 2:
+        currentFrame = 'frog_s'
+        break;
+      case 3:
+        currentFrame = 'frog_w'
+        break;
+    }
+    
+  
     this.playerMap[id].x = x
     this.playerMap[id].y = y
   
     if(this.textMap[id] !== undefined){
     this.textMap[id].x = x
-    this.textMap[id].y = y - 15
+    this.textMap[id].y = y - 45;
     }
+  
+    var player = this.playerMap[id];
+  
+    //stop animation when done wlking!
+    if(!this.playerMap[id].anims.isPlaying){
+      this.playerMap[id].anims.play(currentFrame);
+    }
+    
     
   
     /*
@@ -194,17 +262,7 @@ game.movePlayer = function(id,x,y){
 };
 
 
-/*
-function myTimer() {
-    if(tempLoc.x != 0 && tempLoc.y != 0){
-      Client.sendKey(tempLoc.x,tempLoc.y);
-      tempLoc = {x: 0, y: 0};
-    }
-    
-}
 
-var myVar = setInterval(myTimer, 15);
-*/
 
 // window.addEventListener('resize', () => {
 //   this.game.resize(window.innerWidth, window.innerHeight);
