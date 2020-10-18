@@ -43,7 +43,9 @@ function preload() {
       */
     
     this.load.image("main_room_tiles", "https://cdn.glitch.com/a8799410-ced8-4389-b408-e70cb1fd6d7b%2Fmain_room.png?v=1602985634599"); 
+  this.load.image("rock_garden", "https://cdn.glitch.com/a8799410-ced8-4389-b408-e70cb1fd6d7b%2Frock_garden.png?v=1602996652887");
     this.load.tilemapTiledJSON("map", "https://cdn.glitch.com/a8799410-ced8-4389-b408-e70cb1fd6d7b%2Fmap.json?v=1602996648162");
+  //this.load.tilemapTiledJSON("map", "https://cdn.glitch.com/a8799410-ced8-4389-b408-e70cb1fd6d7b%2Fmain_room.json?v=1602991085683");
   
     this.load.multiatlas('greenFrog', 
                          'https://cdn.glitch.com/a8799410-ced8-4389-b408-e70cb1fd6d7b%2FplayerPurple_spritesheet.json?v=1602977954157', 
@@ -51,7 +53,7 @@ function preload() {
 }
 
 function create() {
-   this.add.image(400, 300, 'main_room_tiles');
+   //this.add.image(400, 300, 'main_room_tiles');
 
   game.playerMap = {};
   game.textMap = {};
@@ -101,9 +103,12 @@ s
 
   // Parameters are the name you gave the tileset in Tiled and then the key of the tileset image in
   // Phaser's cache (i.e. the name you used in preload)
+  
   this.tiles = this.map.addTilesetImage("main_room", "main_room_tiles");
   
   this.backgroundLayer = this.map.createStaticLayer("Tile Layer 1", this.tiles, 0, 0);
+  //wait i renamed it to world sorry
+  // there are 2 layers now: one where we have collidable objects (World) and one thats below the player (Below Player)
   
   console.log(this)
 
