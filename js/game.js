@@ -317,8 +317,8 @@ game.openGarden = function(id){
            plants[k][i][j] = ""
 
           if(item != ""){
-            var my_x = ((i+1) * 50) + (160 + (k * 200));
-            var my_y = ((j+1) * 50) + 260;
+            var my_x = ((i+1) * 50) + (175 + (k * 200));
+            var my_y = ((j+1) * 50) + 294;
             plants[k][i][j] = this.scene.scenes[0].add.sprite(my_x, my_y, 'c_garden', item).setInteractive();
             plants[k][i][j].setScale(0.1,0.1);
             plants[k][i][j].on('pointerdown', function(){
@@ -344,6 +344,10 @@ game.openGarden = function(id){
               
               if(tool == 2 && this.frame.customData.filename == 'plant3.png'){
                 this.setTexture('c_garden', 'plant4.png')
+              }
+              
+              if(tool == 0 && (this.frame.customData.filename == 'plant3.png' || this.frame.customData.filename == 'plant2.png' || this.frame.customData.filename == 'plant1.png' || this.frame.customData.filename == 'plant4.png')){
+                this.setTexture('c_garden', 'tilledSoil.png')
               }
             })
           }
