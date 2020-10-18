@@ -2,6 +2,7 @@ var config = {
 	type: Phaser.AUTO,
 	width: 1088, // initial width that determines the scaled size
   height: 768,
+  parent: "game-container",
   /*
 	scale: {
 		mode: Phaser.Scale.FIT,
@@ -114,6 +115,9 @@ s
   // there are 2 layers now: one where we have collidable objects (World) and one thats below the player (Below Player)
   //for collision physics, line below is needed?
   //worldLayer.setCollisionByProperty({ collides: true });
+  
+  const camera = this.cameras.main;
+  camera.setBounds(0, 0, map.widthInPixels, map.heightInPixels);
   
   console.log(this)
   
@@ -250,15 +254,19 @@ game.openGarden = function(id){
   
   //randomly place veggies
   
-  const items = ['trash1.png', 'trash2.png', 'plant1.png', 'plant3.png'];
+  const items = ['trash1.png', 'trash2.png', 'plant1.png', 'plant3.png', "", ""];
   
   for(var k= 0; k < 3; k++){
     for(var i =0; i < 3; i++){
       for(var j=0; j < 3; j++){
-        var my_x = ((i+1) * 60) + (80 + (k * 200));
-        var my_y = ((j+1) * 60) + 120;
-        var trash = this.scene.scenes[0].add.sprite(my_x, my_y, 'c_garden', 'trash1.png');
-        trash.setScale(0.5,0.5);
+        var item = items[Math.floor(Math.random() * items.length)];
+        
+        if(item != ""){
+          var my_x = ((i+1) * 50) + (90 + (k * 200));
+          var my_y = ((j+1) * 50) + 130;
+          var trash = this.scene.scenes[0].add.sprite(my_x, my_y, 'c_garden', item);
+          trash.setScale(0.25,0.25);
+        }
       }
     }
   }
