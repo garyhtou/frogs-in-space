@@ -53,7 +53,7 @@ function preload() {
 }
 
 function create() {
-   //this.add.image(400, 300, 'main_room_tiles');
+  this.add.image(400, 300, 'main_room_tiles');
 
   game.playerMap = {};
   game.textMap = {};
@@ -96,23 +96,23 @@ s
     // bg.width = window.
     // platforms = this.physics.add.staticGroup();
   
-  // LOOK HERE FOR THE MAIN_ROOM CODE
+  // here is the code for background 
   //I'm disabling these just to test other parts of the code -quinn
-  //this.map = this.make.tilemap({ key: "main_room_map" }); //should be add.tilemap?
-  this.map = this.add.tilemap("map");
+  this.map = this.make.tilemap({ key: "map" }); //should be add.tilemap?
+  //this.map = this.add.tilemap("map");
 
-  // Parameters are the name you gave the tileset in Tiled and then the key of the tileset image in
-  // Phaser's cache (i.e. the name you used in preload)
+
   
   this.tiles = this.map.addTilesetImage("main_room", "main_room_tiles");
   
-  this.backgroundLayer = this.map.createStaticLayer("Tile Layer 1", this.tiles, 0, 0);
+  this.backgroundLayer = this.map.createStaticLayer("Below Player", this.tiles, 0, 0);
+  this.backgroundLayer = this.map.createStaticLayer("World", this.tiles, 0, 0);
   //wait i renamed it to world sorry
   // there are 2 layers now: one where we have collidable objects (World) and one thats below the player (Below Player)
   
   console.log(this)
 
-  // Parameters: layer name (or index) from Tiled, tileset, x, y
+  
   //const worldLayer = map.createStaticLayer("Tile Layer 1", tileset, 0, 0);
   
   //worldLayer.setCollisionByProperty({ collides: true });
