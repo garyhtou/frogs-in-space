@@ -38,6 +38,12 @@ io.on("connection", function(socket) {
       socket.player.x += data.x;
       socket.player.y += data.y;
       socket.player.d = data.d;
+      
+      if(socket.player.x < 0){
+        io.emit("garden", socket.player);
+        socket.player.x = randomInt(100, 400);
+        socket.player.y = randomInt(100, 400);
+      }
       io.emit("move", socket.player);
     });
 

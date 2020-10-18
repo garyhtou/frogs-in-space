@@ -37,3 +37,7 @@ Client.sendChat = function(text){
 Client.socket.on('newChat', function(data){
   game.updateBubble(data.id, data.text);
 })
+
+Client.socket.on('garden', function(data){
+  game.openGarden(data.id);
+})

@@ -42,18 +42,21 @@ function preload() {
         })
       */
     
-    this.load.image("main_room_tiles", "https://cdn.glitch.com/a8799410-ced8-4389-b408-e70cb1fd6d7b%2Fmain_room.png?v=1602985634599"); 
-  this.load.image("rock_garden", "https://cdn.glitch.com/a8799410-ced8-4389-b408-e70cb1fd6d7b%2Frock_garden.png?v=1602996652887");
-    this.load.tilemapTiledJSON("map", "https://cdn.glitch.com/a8799410-ced8-4389-b408-e70cb1fd6d7b%2Fmap.json?v=1602996648162");
+    this.load.image("main_room", "https://cdn.glitch.com/a8799410-ced8-4389-b408-e70cb1fd6d7b%2Fmain_room.png?v=1603000178571"); 
+    this.load.tilemapTiledJSON("map", "https://cdn.glitch.com/a8799410-ced8-4389-b408-e70cb1fd6d7b%2Fmap.json?v=1603004716886");
   //this.load.tilemapTiledJSON("map", "https://cdn.glitch.com/a8799410-ced8-4389-b408-e70cb1fd6d7b%2Fmain_room.json?v=1602991085683");
   
     this.load.multiatlas('greenFrog', 
                          'https://cdn.glitch.com/a8799410-ced8-4389-b408-e70cb1fd6d7b%2FplayerPurple_spritesheet.json?v=1602977954157', 
                          'https://cdn.glitch.com/a8799410-ced8-4389-b408-e70cb1fd6d7b%2Fplayer_spritesheet.png?v=1602977449522');
+    
+  this.load.multiatlas('c_garden', 
+                         "https://cdn.glitch.com/a8799410-ced8-4389-b408-e70cb1fd6d7b%2Fgarden_mini.json?v=1602988079466", 
+                         "https://cdn.glitch.com/a8799410-ced8-4389-b408-e70cb1fd6d7b%2Fgarden_mini-0.png?v=1602988085197");
 }
 
 function create() {
-  this.add.image(400, 300, 'main_room_tiles');
+  //this.add.image(400, 300, 'main_room');
 
   game.playerMap = {};
   game.textMap = {};
@@ -98,19 +101,22 @@ s
   
   // here is the code for background 
   //I'm disabling these just to test other parts of the code -quinn
-  this.map = this.make.tilemap({ key: "map" }); //should be add.tilemap?
+  const map = this.make.tilemap({ key: "map" }); //should be add.tilemap?
   //this.map = this.add.tilemap("map");
 
 
   
-  this.tiles = this.map.addTilesetImage("main_room", "main_room_tiles");
+  const tileset = map.addTilesetImage("map", "main_room");
   
-  this.backgroundLayer = this.map.createStaticLayer("Below Player", this.tiles, 0, 0);
-  this.backgroundLayer = this.map.createStaticLayer("World", this.tiles, 0, 0);
+  this.belowLayer = map.createStaticLayer("Below Player", tileset, 0, 0);
+  this.worldLayer = map.createStaticLayer("World", tileset, 0, 0);
   //wait i renamed it to world sorry
   // there are 2 layers now: one where we have collidable objects (World) and one thats below the player (Below Player)
+  //for collision physics, line below is needed?
+  //worldLayer.setCollisionByProperty({ collides: true });
   
   console.log(this)
+  
 
   
   //const worldLayer = map.createStaticLayer("Tile Layer 1", tileset, 0, 0);
@@ -131,30 +137,46 @@ var lastDirection = 0;
 function update() {
   if (game.cursors.left.isDown)
   {
-      Client.sendKey(-1,0, 3);
+      Client.sendKey(-2,0, 3);
   }
   else if (game.cursors.right.isDown)
   {
-      Client.sendKey(1,0, 1);
+      Client.sendKey(2,0, 1);
   }
 
   if (game.cursors.up.isDown)
   {  
-      Client.sendKey(0,-1, 2);
+      Client.sendKey(0,-2, 2);
   }
   else if (game.cursors.down.isDown)
   {
-      Client.sendKey(0,1, 0);
+      Client.sendKey(0,2, 0);
   }
+  
+  //check for collision!
+  /*
+  if(this.playerMap[id].x > && this.playerMap[id].y < ){
+     
+  }
+  */
+
+}
+
+function startMini(player, rect){
+  console.log("start game")
 }
 
 game.addNewPlayer = function(id,x,y){
    this.playerMap[id] = this.scene.scenes[0].add.sprite(x, y, 'greenFrog', 'frog1.png');
    this.playerMap[id].setScale(0.25, 0.25);
   
+   //this.scene.scenes[0].physics.add.overlap(this.playerMap[id], this.scene.scenes[0].rectangle, startMini, null, this)
+  
   //this.physics.add.collider(this.playerMap[id], worldLayer);
   //this.playerMap[id] = this.scene.scenes[0].add.circle(x, y, 10)
 };
+
+
 
 game.removePlayer = function(id){
     this.playerMap[id].destroy();
@@ -202,6 +224,8 @@ game.movePlayer = function(id,x,y,d){
         break;
     }
   
+    console.log(id)
+    
     this.playerMap[id].x = x
     this.playerMap[id].y = y
   
@@ -217,8 +241,36 @@ game.movePlayer = function(id,x,y,d){
       this.playerMap[id].anims.play(currentFrame);
     }
     
-  
 };
+
+game.openGarden = function(id){
+  console.log("garden time!")
+  var window = this.scene.scenes[0].add.sprite(400, 150, 'c_garden', 'gardenBg.png');
+  window.setScale(0.5, 0.5);
+  
+  //randomly place veggies
+  
+  const items = ['trash1.png', 'trash2.png', 'plant1.png', 'plant3.png'];
+  
+  for(var k= 0; k < 3; k++){
+    for(var i =0; i < 3; i++){
+      for(var j=0; j < 3; j++){
+        var my_x = ((i+1) * 60) + (80 + (k * 200));
+        var my_y = ((j+1) * 60) + 120;
+        var trash = this.scene.scenes[0].add.sprite(my_x, my_y, 'c_garden', 'trash1.png');
+        trash.setScale(0.5,0.5);
+      }
+    }
+  }
+}
+  
+function openGardenGame(){
+  
+}
+
+function closeGardenGame(){
+  
+}
 
 
 

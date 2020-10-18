@@ -33,3 +33,12 @@
 {"name":"floor_tile_white_border.jpg","date":"2020-10-18T05:16:30.472Z","url":"https://cdn.glitch.com/a8799410-ced8-4389-b408-e70cb1fd6d7b%2Ffloor_tile_white_border.jpg","type":"image/jpeg","size":1282,"imageWidth":32,"imageHeight":32,"thumbnail":"https://cdn.glitch.com/a8799410-ced8-4389-b408-e70cb1fd6d7b%2Ffloor_tile_white_border.jpg","thumbnailWidth":32,"thumbnailHeight":32,"uuid":"GrX0UdMhybq0elE7"}
 {"uuid":"9rGktWz30LcXagRi","deleted":true}
 {"name":"map.json","date":"2020-10-18T05:21:40.336Z","url":"https://cdn.glitch.com/a8799410-ced8-4389-b408-e70cb1fd6d7b%2Fmap.json","type":"application/json","size":76585,"thumbnail":"https://cdn.glitch.com/a8799410-ced8-4389-b408-e70cb1fd6d7b%2Fthumbnails%2Fmap.json","thumbnailWidth":210,"thumbnailHeight":210,"uuid":"NghEkjeuzDLfJxxR"}
+{"uuid":"GLv8PC39432VpK0D","deleted":true}
+{"uuid":"nzNpOsv8OiPx4ATt","deleted":true}
+{"uuid":"NzjFWlnc8PmgSaQX","deleted":true}
+{"uuid":"GrX0UdMhybq0elE7","deleted":true}
+{"uuid":"NghEkjeuzDLfJxxR","deleted":true}
+{"name":"map.json","date":"2020-10-18T05:49:34.936Z","url":"https://cdn.glitch.com/a8799410-ced8-4389-b408-e70cb1fd6d7b%2Fmap.json","type":"application/json","size":204058,"thumbnail":"https://cdn.glitch.com/a8799410-ced8-4389-b408-e70cb1fd6d7b%2Fthumbnails%2Fmap.json","thumbnailWidth":210,"thumbnailHeight":210,"uuid":"52H57URZHJONXzRg"}
+{"name":"main_room.png","date":"2020-10-18T05:49:38.571Z","url":"https://cdn.glitch.com/a8799410-ced8-4389-b408-e70cb1fd6d7b%2Fmain_room.png","type":"image/png","size":260742,"imageWidth":1376,"imageHeight":768,"thumbnail":"https://cdn.glitch.com/a8799410-ced8-4389-b408-e70cb1fd6d7b%2Fthumbnails%2Fmain_room.png","thumbnailWidth":330,"thumbnailHeight":185,"uuid":"Hj6WhGEcriCrK3rE"}
+{"uuid":"52H57URZHJONXzRg","deleted":true}
+{"name":"map.json","date":"2020-10-18T07:05:16.886Z","url":"https://cdn.glitch.com/a8799410-ced8-4389-b408-e70cb1fd6d7b%2Fmap.json","type":"application/json","size":389302,"thumbnail":"https://cdn.glitch.com/a8799410-ced8-4389-b408-e70cb1fd6d7b%2Fthumbnails%2Fmap.json","thumbnailWidth":210,"thumbnailHeight":210,"uuid":"XPsQJzKquAiCUQGZ"}
