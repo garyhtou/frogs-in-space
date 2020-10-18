@@ -1,5 +1,5 @@
 # This is for Google Cloud's Cloud Build.
-# On push to GitHub, the project will be built and deployed to 
+# On push to GitHub, the project will be built and deployed
 
 steps:
   - name: node
