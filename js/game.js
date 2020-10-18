@@ -96,7 +96,7 @@ s
   
   // LOOK HERE FOR THE MAIN_ROOM CODE
   //I'm disabling these just to test other parts of the code -quinn
-  this.map = this.make.tilemap({ key: "main_room_map" });
+  this.map = this.make.tilemap({ key: "main_room_map" }); //should be add.tilemap?
 
   // Parameters are the name you gave the tileset in Tiled and then the key of the tileset image in
   // Phaser's cache (i.e. the name you used in preload)
@@ -156,7 +156,7 @@ function update() {
 }
 
 game.addNewPlayer = function(id,x,y){
-   this.playerMap[id] = this.scene.scenes[0].add.sprite(x, y, 'greenFrog', 'frog2.png');
+   this.playerMap[id] = this.scene.scenes[0].add.sprite(x, y, 'greenFrog', 'frog1.png');
    this.playerMap[id].setScale(0.25, 0.25);
   
   //this.physics.add.collider(this.playerMap[id], worldLayer);
