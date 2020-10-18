@@ -35,17 +35,23 @@ io.on("connection", function(socket) {
     socket.broadcast.emit("newplayer", socket.player);
 
     socket.on("key", function(data) {
-      socket.player.x += data.x;
-      socket.player.y += data.y;
-      socket.player.d = data.d;
-      
-      if(socket.player.x < 0){
-        io.emit("garden", socket.player);
-        socket.player.x = randomInt(100, 400);
-        socket.player.y = randomInt(100, 400);
+      if(socket.player.x + data.x > -5 && socket.player.x + data.x < 900 && socket.player.y + data.y < 600 && socket.player.y + data.y > 0){
+        socket.player.x += data.x;
+        socket.player.y += data.y;
+        socket.player.d = data.d;
+
+        if(socket.player.x < 0){
+          io.emit("garden", socket.player);
+          socket.player.x = randomInt(100, 400);
+          socket.player.y = randomInt(100, 400);
+        }
+        io.emit("move", socket.player);
       }
-      io.emit("move", socket.player);
     });
+    
+    socket.on("getID", function(data){
+      io.emit("me", socket.player)
+    })
 
     socket.on("chat", function(text) {
       socket.player.text = text;

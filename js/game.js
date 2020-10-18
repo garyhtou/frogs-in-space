@@ -1,8 +1,8 @@
 var config = {
 	type: Phaser.AUTO,
-	width: 1088, // initial width that determines the scaled size
-  height: 768,
-  parent: "game-container",
+	width: 940, // initial width that determines the scaled size
+  height: 680,
+  parent: "gameCanvas",
   /*
 	scale: {
 		mode: Phaser.Scale.FIT,
@@ -44,6 +44,7 @@ function preload() {
       */
     
     this.load.image("main_room", "https://cdn.glitch.com/a8799410-ced8-4389-b408-e70cb1fd6d7b%2Fmain_room.png?v=1603000178571"); 
+  this.load.image("main_room_2", "https://cdn.glitch.com/a8799410-ced8-4389-b408-e70cb1fd6d7b%2Fmainroom2.png?v=1603008242252"); 
     this.load.tilemapTiledJSON("map", "https://cdn.glitch.com/a8799410-ced8-4389-b408-e70cb1fd6d7b%2Fmap.json?v=1603004716886");
   //this.load.tilemapTiledJSON("map", "https://cdn.glitch.com/a8799410-ced8-4389-b408-e70cb1fd6d7b%2Fmain_room.json?v=1602991085683");
   
@@ -57,7 +58,7 @@ function preload() {
 }
 
 function create() {
-  //this.add.image(400, 300, 'main_room');
+  this.add.image(400, 300, 'main_room_2');
 
   game.playerMap = {};
   game.textMap = {};
@@ -111,6 +112,8 @@ s
   
   this.belowLayer = map.createStaticLayer("Below Player", tileset, 0, 0);
   this.worldLayer = map.createStaticLayer("World", tileset, 0, 0);
+  
+  this.worldLayer.setCollisionByProperty({ collides: true });
   //wait i renamed it to world sorry
   // there are 2 layers now: one where we have collidable objects (World) and one thats below the player (Below Player)
   //for collision physics, line below is needed?
@@ -132,6 +135,12 @@ s
   //this.cameras.main.setBounds(0, 0, map.widthInPixels, map.heightInPixels);
   
 	Client.askNewPlayer();
+  Client.getMe();
+}
+
+game.setMe = function(me){
+  this.me = me;
+  console.log(me);
 }
 
 var tempLoc = {x:0, y:0}
@@ -139,22 +148,29 @@ var tempLoc = {x:0, y:0}
 var lastDirection = 0;
 
 function update() {
+  
+  //this.playerMap[me].body.setVelocity(0);
+  
   if (game.cursors.left.isDown)
   {
       Client.sendKey(-2,0, 3);
+    //this.playerMap[me].body.setVelocityX(-100);
   }
   else if (game.cursors.right.isDown)
   {
       Client.sendKey(2,0, 1);
+    //this.playerMap[me].body.setVelocityX(100);
   }
 
   if (game.cursors.up.isDown)
   {  
       Client.sendKey(0,-2, 2);
+    //this.playerMap[me].body.setVelocityY(-100);
   }
   else if (game.cursors.down.isDown)
   {
       Client.sendKey(0,2, 0);
+    //this.playerMap[me].body.setVelocityY(100);
   }
   
   //check for collision!
@@ -163,16 +179,26 @@ function update() {
      
   }
   */
-
+  //this.playerMap[me].body.velocity.normalize().scale(speed);
 }
 
 function startMini(player, rect){
   console.log("start game")
 }
 
+var me = undefined;
+
 game.addNewPlayer = function(id,x,y){
-   this.playerMap[id] = this.scene.scenes[0].add.sprite(x, y, 'greenFrog', 'frog1.png');
+  
+
+   this.playerMap[id] = this.scene.scenes[0].physics.add.sprite(x, y, 'greenFrog', 'frog1.png');
    this.playerMap[id].setScale(0.25, 0.25);
+  
+
+    //this.scene.scenes[0].physics.add.collider(this.playerMap[me], this.worldLayer);
+  
+  
+    
   
    //this.scene.scenes[0].physics.add.overlap(this.playerMap[id], this.scene.scenes[0].rectangle, startMini, null, this)
   
@@ -248,27 +274,83 @@ game.movePlayer = function(id,x,y,d){
 };
 
 game.openGarden = function(id){
-  console.log("garden time!")
-  var window = this.scene.scenes[0].add.sprite(400, 150, 'c_garden', 'gardenBg.png');
-  window.setScale(0.5, 0.5);
-  
-  //randomly place veggies
-  
-  const items = ['trash1.png', 'trash2.png', 'plant1.png', 'plant3.png', "", ""];
-  
-  for(var k= 0; k < 3; k++){
-    for(var i =0; i < 3; i++){
-      for(var j=0; j < 3; j++){
-        var item = items[Math.floor(Math.random() * items.length)];
+  if(id == this.me){
+    console.log("garden time!")
+    var tool = 0;
+    
+    //var sprite = this.add.sprite(400, 300, 'eye').setInteractive({ cursor: 'url(assets/input/cursors/pen.cur), pointer' });
+    
+    var window = this.scene.scenes[0].add.sprite(480, 300, 'c_garden', 'gardenBg.png');
+    window.setScale(0.5, 0.5);
+
+    var rakeButton = this.scene.scenes[0].add.sprite(850, 100, 'c_garden', 'rakeButton.png').setInteractive();
+    rakeButton.setScale(0.25,0.25);
+    rakeButton.on('pointerdown', function(){tool = 0}, this)
+    
+    var handButton = this.scene.scenes[0].add.sprite(850, 200, 'c_garden', 'handButton.png').setInteractive();
+    handButton.setScale(0.25,0.25);
+    handButton.on('pointerdown', function(){tool = 1}, this)
+    
+    var waterButton = this.scene.scenes[0].add.sprite(850, 300, 'c_garden', 'waterButton.png').setInteractive();
+    waterButton.setScale(0.25,0.25);
+    waterButton.on('pointerdown', function(){tool = 2}, this)
+    
+    var seedButton = this.scene.scenes[0].add.sprite(850, 400, 'c_garden', 'seedButton.png').setInteractive();
+    seedButton.setScale(0.25,0.25);
+    seedButton.on('pointerdown', function(){tool = 3}, this)
+
+    //randomly place veggies
+
+    const items = ['trash1.png', 'trash2.png', 'plant1.png', 'plant2.png', "tilledSoil.png", "tilledSoil.png"];
+
+    var plants = new Array();
         
-        if(item != ""){
-          var my_x = ((i+1) * 50) + (90 + (k * 200));
-          var my_y = ((j+1) * 50) + 130;
-          var trash = this.scene.scenes[0].add.sprite(my_x, my_y, 'c_garden', item);
-          trash.setScale(0.25,0.25);
+    for(var k= 0; k < 3; k++){
+      plants[k] = new Array();
+      
+      for(var i =0; i < 3; i++){
+        plants[k][i] = new Array();
+        
+        for(var j=0; j < 3; j++){
+          var item = items[Math.floor(Math.random() * items.length)];
+          
+           plants[k][i][j] = ""
+
+          if(item != ""){
+            var my_x = ((i+1) * 50) + (160 + (k * 200));
+            var my_y = ((j+1) * 50) + 260;
+            plants[k][i][j] = this.scene.scenes[0].add.sprite(my_x, my_y, 'c_garden', item).setInteractive();
+            plants[k][i][j].setScale(0.1,0.1);
+            plants[k][i][j].on('pointerdown', function(){
+              console.log(this.frame)
+              //if is trash and scoop, remove
+              if(tool == 1 && (this.frame.customData.filename == 'trash1.png' || this.frame.customData.filename == 'trash2.png')){
+                this.setTexture('c_garden', 'tilledSoil.png')
+              }
+              //if is empty and rake, turn
+              //
+              //if is turned and seed, plant
+              if(tool == 3 && this.frame.customData.filename == 'tilledSoil.png'){
+                this.setTexture('c_garden', 'plant1.png')
+              }
+              //if is seed and water, grow?!!!!
+              if(tool == 2 && this.frame.customData.filename == 'plant1.png'){
+                this.setTexture('c_garden', 'plant2.png')
+              }
+              
+              if(tool == 2 && this.frame.customData.filename == 'plant2.png'){
+                this.setTexture('c_garden', 'plant3.png')
+              }
+              
+              if(tool == 2 && this.frame.customData.filename == 'plant3.png'){
+                this.setTexture('c_garden', 'plant4.png')
+              }
+            })
+          }
         }
       }
     }
+    console.log(plants);
   }
 }
   

@@ -41,3 +41,11 @@ Client.socket.on('newChat', function(data){
 Client.socket.on('garden', function(data){
   game.openGarden(data.id);
 })
+
+Client.socket.on('me', function(data){
+  game.setMe(data.id);
+})
+
+Client.getMe = function(){
+  Client.socket.emit('getID')
+}
