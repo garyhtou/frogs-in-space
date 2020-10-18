@@ -42,6 +42,8 @@ function preload() {
             frameHeight: 48
         })
       */
+  
+  this.load.image("ok", "https://cdn.glitch.com/a8799410-ced8-4389-b408-e70cb1fd6d7b%2Fokok.png?v=1603015686415")
     
     this.load.image("main_room", "https://cdn.glitch.com/a8799410-ced8-4389-b408-e70cb1fd6d7b%2Fmain_room.png?v=1603000178571"); 
   this.load.image("main_room_2", "https://cdn.glitch.com/a8799410-ced8-4389-b408-e70cb1fd6d7b%2Fmainroom2.png?v=1603008242252"); 
@@ -274,9 +276,12 @@ game.movePlayer = function(id,x,y,d){
 };
 
 game.openGarden = function(id){
-  if(id == this.me){
+  //id == this.me
+  if(true){
     console.log("garden time!")
     var tool = 0;
+    
+    var plants = new Array();
     
     //var sprite = this.add.sprite(400, 300, 'eye').setInteractive({ cursor: 'url(assets/input/cursors/pen.cur), pointer' });
     
@@ -285,25 +290,65 @@ game.openGarden = function(id){
 
     var rakeButton = this.scene.scenes[0].add.sprite(850, 100, 'c_garden', 'rakeButton.png').setInteractive();
     rakeButton.setScale(0.25,0.25);
-    rakeButton.on('pointerdown', function(){tool = 0}, this)
+    rakeButton.on('pointerdown', function(ctx){
+      rakeButton.setTint(0xff0000);
+      handButton.setTint(0xffffff)
+      waterButton.setTint(0xffffff)
+      seedButton.setTint(0xffffff)
+      tool = 0
+    }, this)
     
     var handButton = this.scene.scenes[0].add.sprite(850, 200, 'c_garden', 'handButton.png').setInteractive();
     handButton.setScale(0.25,0.25);
-    handButton.on('pointerdown', function(){tool = 1}, this)
+    handButton.on('pointerdown', function(){
+      handButton.setTint(0xff0000);
+      rakeButton.clearTint();
+      waterButton.clearTint();
+      seedButton.clearTint();
+      tool = 1
+    }, this)
     
     var waterButton = this.scene.scenes[0].add.sprite(850, 300, 'c_garden', 'waterButton.png').setInteractive();
     waterButton.setScale(0.25,0.25);
-    waterButton.on('pointerdown', function(){tool = 2}, this)
+    waterButton.on('pointerdown', function(){
+      waterButton.setTint(0xff0000);
+      rakeButton.clearTint();
+      handButton.clearTint();
+      seedButton.clearTint();
+      tool = 2
+    }, this)
     
     var seedButton = this.scene.scenes[0].add.sprite(850, 400, 'c_garden', 'seedButton.png').setInteractive();
     seedButton.setScale(0.25,0.25);
-    seedButton.on('pointerdown', function(){tool = 3}, this)
-
+    seedButton.on('pointerdown', function(){
+      seedButton.setTint(0xff0000);
+      rakeButton.clearTint();
+      handButton.clearTint();
+      waterButton.clearTint();
+      tool = 3
+    }, this)
+    
+    var closeButton = this.scene.scenes[0].add.sprite(850, 500, 'ok').setInteractive();
+    closeButton.setScale(0.03,0.03);
+    closeButton.on('pointerdown', function(){
+      rakeButton.setActive(false).setVisible(false);
+      handButton.setActive(false).setVisible(false);
+      waterButton.setActive(false).setVisible(false);
+      seedButton.setActive(false).setVisible(false);
+      closeButton.setActive(false).setVisible(false);
+      for(var i = 0; i < 3; i++){
+        for(var j = 0; j < 3; j++){
+          for(var k = 0; k < 3; k++){
+            plants[k][i][j].setActive(false).setVisible(false);
+          }
+        }
+      }
+      window.setActive(false).setVisible(false);
+    }, this)
+    
     //randomly place veggies
 
     const items = ['trash1.png', 'trash2.png', 'plant1.png', 'plant2.png', "tilledSoil.png", "tilledSoil.png"];
-
-    var plants = new Array();
         
     for(var k= 0; k < 3; k++){
       plants[k] = new Array();
