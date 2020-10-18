@@ -1,4 +1,10 @@
+# This is for Google Cloud's Cloud Build.
+# On push to GitHub, the project will be built and deployed to 
+
 steps:
   - name: node
     entrypoint: npm
     args: ["install"]
+- name: 'gcr.io/cloud-builders/gcloud'
+  args: ['app', 'deploy']
+  timeout: '1600s'

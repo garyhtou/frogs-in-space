@@ -156,7 +156,7 @@ function update() {
 }
 
 game.addNewPlayer = function(id,x,y){
-   this.playerMap[id] = this.scene.scenes[0].add.sprite(x, y, 'greenFrog', 'frog1.png');
+   this.playerMap[id] = this.scene.scenes[0].add.sprite(x, y, 'greenFrog', 'frog2.png');
    this.playerMap[id].setScale(0.25, 0.25);
   
   //this.physics.add.collider(this.playerMap[id], worldLayer);
