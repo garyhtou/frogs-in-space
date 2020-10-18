@@ -2,34 +2,39 @@
 <!-- served from your routes in server.js -->
 <!DOCTYPE html>
 <html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
-		<meta name="viewport" content="width=device-width, initial-scale=1" />
-		<meta name="description" content="A cool thing made with Glitch" />
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="A cool thing made with Glitch" />
 
-		<title>Frogs in Space</title>
+    <title>Frogs in Space</title>
 
-		<link
-			id="favicon"
-			rel="icon"
-			href="https://glitch.com/edit/favicon-app.ico"
-			type="image/x-icon"
-		/>
-		<link rel="stylesheet" href="/css/main.css" />
+    <link
+      id="favicon"
+      rel="icon"
+      href="https://glitch.com/edit/favicon-app.ico"
+      type="image/x-icon"
+    />
+    <link rel="stylesheet" href="/css/main.css" />
+    <!-- set of basic css styles via tailwindcss -->
+    <link rel="stylesheet" href="/css/preflight.css" />
 
-		<!-- import the webpage's client-side javascript file -->
-		<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.1/socket.io.js"></script>
-		<script
-			src="https://cdnjs.cloudflare.com/ajax/libs/phaser/3.24.1/phaser-arcade-physics.js"
-			integrity="sha512-L8IRKAJfG3838QrK2K2kbCGh/84HMMhnul4LKzz+rOTN+PCSXQWmBEdcqMBvs8EsT2cDw5yq3+KsRk+PjK1Ikg=="
-			crossorigin="anonymous"
-		></script>
-		<script src="/js/game.js" type="text/javascript"></script>
-		<script src="/js/client.js" type="text/javascript"></script>
-	</head>
-	<body>
-		<!-- <h1>frogs in space</h1> -->
-		<div id="game"></div>
-	</body>
+    <!-- import the webpage's client-side javascript file -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.1/socket.io.js"></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/phaser/3.24.1/phaser-arcade-physics.js"
+      integrity="sha512-L8IRKAJfG3838QrK2K2kbCGh/84HMMhnul4LKzz+rOTN+PCSXQWmBEdcqMBvs8EsT2cDw5yq3+KsRk+PjK1Ikg=="
+      crossorigin="anonymous"
+    ></script>
+    <script src="/js/game.js" type="text/javascript"></script>
+    <script src="/js/client.js" type="text/javascript"></script>
+  </head>
+  <body>
+    <!-- <h1>frogs in space</h1> -->
+    <div id="game"></div>
+    <div id="control">
+      <input type="text" id="Chat">
+    </div>
+  </body>
 </html>
